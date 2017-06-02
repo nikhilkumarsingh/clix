@@ -56,9 +56,9 @@ class clipboard():
 		for i in range(6):
 			frame = Frame(self.mainFrame, padx = 5, pady = 5, bg = colors[i])
 
-			Button(frame, text = "clip it", command = partial(self.copy_to_clipboard, i), 
-					relief = RAISED, padx = 5, pady = 5,
-					bg = 'dark violet', fg = 'white').grid(row = 0, column = 0, ipady = 10)
+			Button(frame, text = "clip it", font = "Helvetica 12 bold",  
+				    command = partial(self.copy_to_clipboard, i), relief = RAISED, 
+				    padx = 5, pady = 5, bg = 'dark violet', fg = 'white').grid(row = 0, column = 0, ipady = 10)
 
 			textBox = ScrolledText(frame, height = 3, width = 20,font = "Helvetica 12 bold")
 			textBox.insert(END, clips[i])
