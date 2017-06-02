@@ -7,7 +7,7 @@ from .gui import clipboard
 clips = []
 # number of active clix GUIs 
 active = 0
-# previos logged key
+# previously logged key
 prev_Key = None
 
 def OnKeyPress(event):
