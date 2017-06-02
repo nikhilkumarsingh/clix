@@ -88,7 +88,7 @@ Want to contribute?
 Finally, do report bugs and help us make **clix** more and more
 productive!
 
-.. |PyPI| image:: https://img.shields.io/badge/PyPi-v1.0.1-f39f37.svg
+.. |PyPI| image:: https://img.shields.io/badge/PyPi-v1.0.2-f39f37.svg
    :target: https://pypi.python.org/pypi/clix
 .. |license| image:: https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000
    :target: https://github.com/nikhilkumarsingh/clix/blob/master/LICENSE.txt
