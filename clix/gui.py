@@ -21,6 +21,9 @@ class clipboard():
 		self.root.minsize(width = W, height = H)
 		self.position_window()
 
+		img = PhotoImage(file = 'icon.png')
+		self.root.tk.call('wm', 'iconphoto', self.root._w, img)
+
 		# canvas to hold main scrollbar
 		self.canvas = Canvas(self.root, height = H - 10, width = W - 20)
 		self.canvas.pack(side = RIGHT, expand = True)
