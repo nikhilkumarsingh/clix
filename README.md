@@ -24,7 +24,18 @@ An easy to use clipboard manager made using tkinter.
 	```
 	$ clix
 	```
-	**Note:** Leave this terminal open as long as you want to use **clix**.
+  **Note:** Leave this terminal open as long as you want to use **clix**.
+  
+  Another alternative is to use this command:
+  ```
+  $ nohup clix &
+  ```
+  Now, you can close the terminal but **clix** will keep running.
+  
+  To close clix, open a terminal and simply run:
+  ```
+  $ pkill clix
+  ```
 
 - Press **Ctrl** + **space** keys to open clix GUI.
   Initially, all clip frames are empty.
