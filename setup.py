@@ -9,7 +9,7 @@ def readme():
 		pass
 
 setup(name = 'clix',
-	  version = '1.0.3',
+	  version = '1.0.5',
 	  classifiers = [
 	  	'Development Status :: 4 - Beta',
 	  	'License :: OSI Approved :: MIT License',

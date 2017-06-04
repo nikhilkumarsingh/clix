@@ -1,4 +1,4 @@
-[![PyPI](https://img.shields.io/badge/PyPi-v1.0.3-f39f37.svg)](https://pypi.python.org/pypi/clix)
+[![PyPI](https://img.shields.io/badge/PyPi-v1.0.5-f39f37.svg)](https://pypi.python.org/pypi/clix)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/nikhilkumarsingh/clix/blob/master/LICENSE.txt)
 
 # clix
@@ -15,6 +15,11 @@ An easy to use clipboard manager made using tkinter.
 
 	```
 	$ pip install clix
+	```
+
+- If you get `ImportError` for Xlib module, install it using this command:
+	```
+	$ sudo apt-get install python-xlib
 	```
 
 ## Usage
