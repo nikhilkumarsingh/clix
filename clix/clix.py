@@ -1,7 +1,7 @@
 import json
 import xerox
-from pyxhook import HookManager
-from gui import clipboard
+from .pyxhook import HookManager
+from .gui import clipboard
 import argparse
 from utils import available_keys
 import sys
@@ -34,7 +34,7 @@ def OnKeyPress(event):
 
 
 def _show_available_keybindings():
-    print("Available Keys:- ", "\n")
+    print("Available Keys:- "+"\n")
     for i in available_keys:
         print(i)
 
@@ -73,7 +73,7 @@ def main():
             print("Please follow the correct format.")
         finally:
             with open("config", "wb") as f:
-                pickle.dump(key_binding, f)
+                pickle.dump(key_binding, f, protocol=2)
             sys.exit()
 
     new_hook = HookManager()
