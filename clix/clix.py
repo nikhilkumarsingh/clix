@@ -3,7 +3,7 @@ import xerox
 from .pyxhook import HookManager
 from .gui import clipboard
 import argparse
-from utils import available_keys
+from .utils import available_keys
 import sys
 import pickle
 
@@ -14,7 +14,7 @@ active = 0
 # previously logged key
 prev_Key = None
 
-with open("config", "rb") as f:
+with open("clix/config", "rb") as f:
     key_binding = pickle.load(f)
 
 
@@ -40,7 +40,7 @@ def _show_available_keybindings():
 
 
 def _show_current_keybinding():
-    with open("config", "rb") as f:
+    with open("clix/config", "rb") as f:
         key_binding = pickle.load(f)
         temp = {b: a for a, b in available_keys.items()}
         print(temp[key_binding[0]] + "+" + temp[key_binding[1]])
@@ -72,7 +72,7 @@ def main():
         except KeyError:
             print("Please follow the correct format.")
         finally:
-            with open("config", "wb") as f:
+            with open("clix/config", "wb") as f:
                 pickle.dump(key_binding, f, protocol=2)
             sys.exit()
 
