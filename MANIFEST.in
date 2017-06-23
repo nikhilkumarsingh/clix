@@ -1,2 +1,3 @@
 include README.rst
-include clix/icon.png
+include icon.png
+include clix/config

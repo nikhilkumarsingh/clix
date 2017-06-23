@@ -35,13 +35,17 @@ Usage
 
        $ clix
 
-   **Note:** Leave this terminal open as long as you want to use
-   **clix**.
+**Note:** Leave this terminal open as long as you want to use **clix**.
 
-Another alternative is to use this command: ``$ nohup clix &`` Now, you
-can close the terminal but **clix** will keep running.
+Another alternative is to use this command:
 
-To close clix, open a terminal and simply run: ``$ pkill clix``
+``$ nohup clix &``
+
+Now, you can close the terminal but **clix** will keep running.
+
+To close clix, open a terminal and simply run:
+
+``$ pkill clix``
 
 -  Press **Ctrl** + **space** keys to open clix GUI. Initially, all clip
    frames are empty.
@@ -56,8 +60,30 @@ To close clix, open a terminal and simply run: ``$ pkill clix``
 Now, simply pressing **Ctrl** + **v** keys will paste the desired clip
 text!
 
+-  **CLI usage to configure keys**
+
+   ::
+
+       $ clix [-h] [-s SET_KEYBINDING] [-a] [-c]
+
+   You can always use ``$ clix -h`` command to open this help message:
+
+   ::
+
+       optional arguments:
+         -h, --help            show this help message and exit
+         -s SET_KEYBINDING, --set-keybinding SET_KEYBINDING
+                               Set alternate key binding. Default is LCTRL+SPACE
+                               Format :- <KEY1>+<KEY2>. Ex:- RCTRL+RALT. To see
+                               availble key bindings use 'clix -a' option
+         -a, --available-keybindings
+                               Show available key bindings
+         -c, --show-current-keybinding
+
 TODO
 ----
+
+-  [X] Add support for user configurable keys.
 
 -  [ ] Add support for Windows and MacOS.
 
@@ -97,10 +123,16 @@ Want to contribute?
        from pyxhook import HookManager
        from gui import clipboard
 
+-  To test local version of clix:
+
+   ::
+
+       $ pip install -U .
+
 Finally, do report bugs and help us make **clix** more and more
 productive!
 
-.. |PyPI| image:: https://img.shields.io/badge/PyPi-v1.0.5-f39f37.svg
+.. |PyPI| image:: https://img.shields.io/badge/PyPi-v1.0.6-f39f37.svg
    :target: https://pypi.python.org/pypi/clix
 .. |license| image:: https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000
    :target: https://github.com/nikhilkumarsingh/clix/blob/master/LICENSE.txt
