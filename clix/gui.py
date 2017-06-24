@@ -10,6 +10,19 @@ except:
 	from tkinter.scrolledtext import ScrolledText
 import xerox
 
+import os
+curr_dir = os.getcwd()
+import utils
+
+def clear_session(root):
+	root.destroy()
+	# clear data in file
+	with open(curr_dir + "/clix/clips_data", "wb") as f:
+		print( "session cleared")
+	# clear global clips
+	utils.clips=[]
+	clipboard(utils.clips)
+	
 
 class clipboard():
 	def __init__(self, clips):
@@ -25,6 +38,10 @@ class clipboard():
 
 		img = PhotoImage(file = "icon.png")
 		self.root.tk.call('wm', 'iconphoto', self.root._w, img)
+
+		self.menu_bar=Menu(self.root)
+		self.menu_bar.add_command(label="Clear", command= lambda: clear_session(self.root) )
+		self.root.config(menu=self.menu_bar)
 
 		# canvas to hold main scrollbar
 		self.canvas = Canvas(self.root, height = H - 10, width = W - 20)
@@ -101,3 +118,4 @@ class clipboard():
 if __name__ == "__main__":
 	example_clips = ["hello", "copy it"]
 	clipboard(example_clips)
+
