@@ -11,3 +11,6 @@ available_keys = {
 	'RSHIFT' : 'Shift_R',
 	'SPACE' : 'space'
 }
+
+# clipboard
+clips = []
