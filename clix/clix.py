@@ -3,8 +3,8 @@ import json
 import xerox
 import pickle
 import argparse
-from pyxhook import HookManager
-from gui import clipboard
+from .pyxhook import HookManager
+from .gui import clipboard
 import utils
 
 
