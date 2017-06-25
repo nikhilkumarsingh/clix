@@ -23,15 +23,10 @@ with open(os.path.join(os.path.dirname(__file__),'config'), "rb") as f:
     key_binding = pickle.load(f)
 
 # if file does not exist create empty file
-try:
-    clips_data = open(os.path.join(os.path.dirname(__file__),'clips_data'), "rb")
-    utils.clips = pickle.load(clips_data)
-    clips_data.close()
 
-except :
-    clips_data = open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb")
-    utils.clips = []
-    clips_data.close()
+clips_data = open(os.path.join(os.path.dirname(__file__),'clips_data'), "rb")
+utils.clips = pickle.load(clips_data)
+clips_data.close()
 
 
 def OnKeyPress(event):

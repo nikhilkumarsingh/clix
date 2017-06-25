@@ -40,11 +40,8 @@ class clipboard():
         self.root.minsize(width=W, height=H)
         self.position_window()
 
-        try:
-            img = PhotoImage(file="icon.png")
-            self.root.tk.call('wm', 'iconphoto', self.root._w, img)
-        except:
-            pass
+        img = PhotoImage(file=os.path.join(os.path.dirname(__file__),"..","icon.png"))
+        self.root.tk.call('wm', 'iconphoto', self.root._w, img)
 
         # add Menubar
         self.menu_bar = Menu(self.root)
