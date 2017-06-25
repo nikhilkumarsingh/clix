@@ -1,3 +1,4 @@
 include README.rst
 include icon.png
 include clix/config
+include clix/clips_data

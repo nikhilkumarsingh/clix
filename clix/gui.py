@@ -19,7 +19,7 @@ curr_dir = os.getcwd()
 def clear_session(root):
     root.destroy()
     # clear data in file
-    with open(curr_dir + "/clix/clips_data", "wb") as f:
+    with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
         print("session cleared")
     # clear global clips
     utils.clips = []
@@ -38,8 +38,11 @@ class clipboard():
         self.root.minsize(width=W, height=H)
         self.position_window()
 
-        img = PhotoImage(file="icon.png")
-        self.root.tk.call('wm', 'iconphoto', self.root._w, img)
+        try:
+            img = PhotoImage(file="icon.png")
+            self.root.tk.call('wm', 'iconphoto', self.root._w, img)
+        except:
+            pass
 
         # add Menubar
         self.menu_bar = Menu(self.root)

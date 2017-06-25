@@ -8,7 +8,6 @@ from .pyxhook import HookManager
 from .gui import clipboard
 import utils
 
-
 # number of active clix GUIs
 active = 0
 # previously logged key
@@ -18,27 +17,11 @@ curr_dir = os.getcwd()
 
 key_binding = []
 
-# loading key_binding from config file
-try:
-    with open(curr_dir + "/clix/config", "rb") as f:
-        key_binding = pickle.load(f)
-except:
-    with open(curr_dir + "/clix/config", "wb") as f:
-        key_binding = [utils.available_keys["LCTRL"],
-                           utils.available_keys["SPACE"]]
-        pickle.dump(key_binding, f, protocol=2)
+with open(os.path.join(os.path.dirname(__file__),'config'), "rb") as f:
+    key_binding = pickle.load(f)
 
-
-# if file does not exist create empty file
-try:
-    clips_data = open(curr_dir + "/clix/clips_data", "rb")
+with open(os.path.join(os.path.dirname(__file__),'clips_data'), "rb") as f:
     utils.clips = pickle.load(clips_data)
-    clips_data.close()
-
-except :
-    clips_data = open(curr_dir + "/clix/clips_data", "wb")
-    utils.clips = []
-    clips_data.close()
 
 
 def OnKeyPress(event):
@@ -58,7 +41,7 @@ def OnKeyPress(event):
         text = xerox.paste(xsel=True)
         utils.clips.append(text)
         # pickle clips data
-        with open(curr_dir + "/clix/clips_data", "wb") as f:
+        with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
             pickle.dump(utils.clips, f, protocol=2)
 
         print("You just copied: {}".format(text))
@@ -89,7 +72,7 @@ def create_new_session():
     """
      clear old session
     """
-    with open(curr_dir + "/clix/clips_data", "wb") as f:
+    with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
         utils.clips = []
         pickle.dump(utils.clips, f, protocol=2)
 
@@ -138,7 +121,7 @@ def main():
         except KeyError:
             print("Please follow the correct format.")
         else:
-            with open(curr_dir + "/clix/config", "wb") as f:
+            with open(os.path.join(os.path.dirname(__file__),'config'), "wb") as f:
                 pickle.dump(key_binding, f, protocol=2)
         finally:
             sys.exit()
