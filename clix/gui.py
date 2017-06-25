@@ -1,6 +1,9 @@
 from os import path
 from functools import partial
-import utils
+try:
+    import utils
+except:
+    import clix.utils as utils
 import os
 import xerox
 import pickle

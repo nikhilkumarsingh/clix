@@ -4,9 +4,12 @@ import json
 import xerox
 import pickle
 import argparse
+try:
+    import utils
+except:
+    import clix.utils as utils
 from .pyxhook import HookManager
 from .gui import clipboard
-import utils
 
 # number of active clix GUIs
 active = 0
