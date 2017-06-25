@@ -10,7 +10,7 @@ except ImportError:
     from tkinter import *
 try:
     from ScrolledText import ScrolledText
-except:
+except ImportError:
     from tkinter.scrolledtext import ScrolledText
 
 curr_dir = os.getcwd()
@@ -41,6 +41,7 @@ class clipboard():
         img = PhotoImage(file="icon.png")
         self.root.tk.call('wm', 'iconphoto', self.root._w, img)
 
+        # add Menubar
         self.menu_bar = Menu(self.root)
         self.menu_bar.add_command(label="Clear",
                                   command=lambda: clear_session(self.root))

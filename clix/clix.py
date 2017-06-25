@@ -16,9 +16,17 @@ prev_Key = None
 # path to site package
 curr_dir = os.getcwd()
 
+key_binding = []
+
 # loading key_binding from config file
-with open(curr_dir + "/clix/config", "rb") as f:
+try:
+    with open(curr_dir + "/clix/config", "rb") as f:
         key_binding = pickle.load(f)
+except:
+    with open(curr_dir + "/clix/config", "wb") as f:
+        key_binding = [utils.available_keys["LCTRL"],
+                           utils.available_keys["SPACE"]]
+        pickle.dump(key_binding, f, protocol=2)
 
 
 # if file does not exist create empty file
@@ -26,7 +34,8 @@ try:
     clips_data = open(curr_dir + "/clix/clips_data", "rb")
     utils.clips = pickle.load(clips_data)
     clips_data.close()
-except:
+
+except :
     clips_data = open(curr_dir + "/clix/clips_data", "wb")
     utils.clips = []
     clips_data.close()
@@ -73,8 +82,6 @@ def get_current_keybinding():
     """
     global key_binding
     temp = {b: a for a, b in utils.available_keys.items()}
-    print(temp)
-    print(key_binding)
     return temp[key_binding[0]] + "+" + temp[key_binding[1]]
 
 
