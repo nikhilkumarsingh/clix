@@ -21,6 +21,7 @@ curr_dir = os.getcwd()
 
 
 def clear_session(root):
+    root.quit()
     root.destroy()
     # clear global clips
     utils.clips = []
@@ -42,6 +43,8 @@ class clipboard():
         self.root.title("clix")
         self.root.minsize(width=W, height=H)
         self.position_window()
+
+        self.root.protocol('WM_DELETE_WINDOW', self.q) 
 
         img = PhotoImage(file=os.path.join(os.path.dirname(__file__),"..","icon.png"))
         self.root.tk.call('wm', 'iconphoto', self.root._w, img)
@@ -122,6 +125,10 @@ class clipboard():
         x, y = self.root.winfo_pointerxy()
         self.root.geometry('+%d+%d' % (x, y))
 
+    def q(self):
+        print ("closed")
+        self.root.quit()
+        self.root.destroy()
 
 if __name__ == "__main__":
     example_clips = ["hello", "copy it"]

@@ -57,6 +57,8 @@ def OnKeyPress(event):
     else:
         prev_Key = event.Key
 
+    return True
+
 
 def _show_available_keybindings():
     """
