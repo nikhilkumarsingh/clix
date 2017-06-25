@@ -3,6 +3,7 @@ from functools import partial
 import utils
 import os
 import xerox
+import pickle
 
 try:
     from Tkinter import *
@@ -18,11 +19,12 @@ curr_dir = os.getcwd()
 
 def clear_session(root):
     root.destroy()
-    # clear data in file
-    with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
-        print("session cleared")
     # clear global clips
     utils.clips = []
+    # clear data in file
+    with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
+        pickle.dump(utils.clips, f, protocol=2)
+        print("session cleared")
     clipboard(utils.clips)
 
 
