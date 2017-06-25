@@ -21,7 +21,7 @@ with open(os.path.join(os.path.dirname(__file__),'config'), "rb") as f:
     key_binding = pickle.load(f)
 
 with open(os.path.join(os.path.dirname(__file__),'clips_data'), "rb") as f:
-    utils.clips = pickle.load(clips_data)
+    utils.clips = pickle.load(f)
 
 
 def OnKeyPress(event):

@@ -29,6 +29,10 @@ An easy to use clipboard manager made using tkinter.
 	```
 	$ clix
 	```
+	if error shown try:
+	```
+	$ sudo clix
+	```
 
   **Note:** Leave this terminal open as long as you want to use **clix**.
   
