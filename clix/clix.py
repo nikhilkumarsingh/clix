@@ -9,8 +9,8 @@ try:
     import utils
 except:
     import clix.utils as utils
-from .pyxhook import HookManager
-from .gui import clipboard
+from pyxhook import HookManager
+from gui import clipboard
 
 # previously logged key
 prev_Key = None
@@ -21,21 +21,23 @@ key_binding = []
 
 # loading key_binding from config file
 # try:
-with open(os.path.join(os.path.dirname(__file__),'config'), "rb") as f:
+with open(os.path.join(os.path.dirname(__file__), 'config'), "rb") as f:
     key_binding = pickle.load(f)
 
 # if file does not exist create empty file
 try:
-    clips_data = open(os.path.join(os.path.dirname(__file__),'clips_data'), "rb")
+    clips_data = open(os.path.join(os.path.dirname(__file__),
+                      'clips_data'), "rb")
     utils.clips = pickle.load(clips_data)
     clips_data.close()
 except:
     utils.clips = []
 
+
 class ThreadedKeyBind(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        
+
     def run(self):
         self.new_hook = HookManager()
         self.new_hook.KeyDown = self.OnKeyPress
@@ -43,7 +45,7 @@ class ThreadedKeyBind(threading.Thread):
         self.new_hook.start()
         # self.new_hook.cancel()
 
-    def OnKeyPress(self,event):
+    def OnKeyPress(self, event):
         """
         function called when any key is pressed
         """
@@ -60,7 +62,8 @@ class ThreadedKeyBind(threading.Thread):
             self.text = xerox.paste(xsel=True)
             utils.clips.append(self.text)
             # pickle clips data
-            with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
+            with open(os.path.join(os.path.dirname(__file__),
+                      'clips_data'), "wb") as f:
                 pickle.dump(utils.clips, f, protocol=2)
 
             print("You just copied: {}".format(self.text))
@@ -97,7 +100,8 @@ def create_new_session():
     """
      clear old session
     """
-    with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
+    with open(os.path.join(os.path.dirname(__file__),
+              'clips_data'), "wb") as f:
         utils.clips = []
         pickle.dump(utils.clips, f, protocol=2)
 
@@ -146,7 +150,8 @@ def main():
         except KeyError:
             print("Please follow the correct format.")
         else:
-            with open(os.path.join(os.path.dirname(__file__),'config'), "wb") as f:
+            with open(os.path.join(os.path.dirname(__file__),
+                      'config'), "wb") as f:
                 pickle.dump(key_binding, f, protocol=2)
         finally:
             sys.exit()
@@ -157,10 +162,10 @@ def main():
 
     # seperate thread because of tkinter mainloop
     # which blocks every other event
-    t=ThreadedKeyBind().start()
+    t = ThreadedKeyBind().start()
 
     # start gui
-    utils.active=1
+    utils.active = 1
     clipboard(utils.clips)
 
 

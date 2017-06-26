@@ -26,7 +26,8 @@ def clear_session(root):
     # clear global clips
     utils.clips = []
     # clear data in file
-    with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
+    with open(os.path.join(os.path.dirname(__file__),
+              'clips_data'), "wb") as f:
         pickle.dump(utils.clips, f, protocol=2)
         print("session cleared")
     clipboard(utils.clips)
@@ -45,9 +46,10 @@ class clipboard():
         self.position_window()
 
         # when 'X' button is clicked
-        self.root.protocol('WM_DELETE_WINDOW', self.q) 
+        self.root.protocol('WM_DELETE_WINDOW', self.q)
 
-        img = PhotoImage(file=os.path.join(os.path.dirname(__file__),"icon.png"))
+        img = PhotoImage(file=os.path.join(os.path.dirname(__file__),
+                         "icon.png"))
         self.root.tk.call('wm', 'iconphoto', self.root._w, img)
 
         # add Menubar
@@ -77,10 +79,10 @@ class clipboard():
         self.colors = ['orange', 'tomato', 'gold']
         self.frames = []
         self.textBoxes = []
-        self.no_of_clips=len(clips)
+        self.no_of_clips = len(clips)
 
         for i in range(self.no_of_clips):
-            self.add_new_clip(clips[i],i)
+            self.add_new_clip(clips[i], i)
 
         self.check_new_clip()
 
@@ -94,31 +96,33 @@ class clipboard():
         if utils.active == 1:
             # make gui visible
             self.root.deiconify()
-        else :
+        else:
             # make gui hide
             self.root.withdraw()
 
-        if len(utils.clips)>self.no_of_clips:
-            self.add_new_clip(utils.clips[-1],self.no_of_clips)
-            self.no_of_clips+=1
+        if len(utils.clips) > self.no_of_clips:
+            self.add_new_clip(utils.clips[-1], self.no_of_clips)
+            self.no_of_clips += 1
 
-        self.mainFrame.after(500,self.check_new_clip)
+        self.mainFrame.after(500, self.check_new_clip)
 
+    def add_new_clip(self, clip, i):
+        frame = Frame(self.mainFrame, padx=5, pady=5, bg=self.colors[i % 3])
 
-    def add_new_clip(self,clip,i):
-        frame = Frame(self.mainFrame, padx = 5, pady = 5, bg = self.colors[i%3])
-        
-        Button(frame, text = "clip it", font = "Helvetica 12 bold",  
-                command = partial(self.copy_to_clipboard, i), relief = RAISED, 
-                padx = 5, pady = 5, bg = 'dark violet', fg = 'white').grid(row = 0, column = 0, ipady = 10)
+        Button(frame, text="clip it", font="Helvetica 12 bold",
+               command=partial(self.copy_to_clipboard, i), relief=RAISED,
+               padx=5, pady=5, bg='dark violet', fg='white').grid(
+                   row=0, column=0, ipady=10
+               )
 
-        textBox = ScrolledText(frame, height = 3, width = 20,font = "Helvetica 12 bold")
+        textBox = ScrolledText(frame, height=3, width=20,
+                               font="Helvetica 12 bold")
         textBox.insert(END, clip)
 
-        textBox.grid(row = 0, column = 1, sticky = E, padx = 5)
+        textBox.grid(row=0, column=1, sticky=E, padx=5)
         self.textBoxes.append(textBox)
 
-        frame.pack(fill = 'both', expand = True, pady = 5)
+        frame.pack(fill='both', expand=True, pady=5)
         self.frames.append(frame)
 
     def copy_to_clipboard(self, idx):
@@ -142,8 +146,8 @@ class clipboard():
         self.root.geometry('+%d+%d' % (x, y))
 
     def q(self):
-        print ("closed")
-        utils.active-=1
+        print("closed")
+        utils.active -= 1
         self.root.withdraw()
 
 if __name__ == "__main__":
