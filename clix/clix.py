@@ -4,6 +4,7 @@ import json
 import xerox
 import pickle
 import argparse
+import threading
 try:
     import utils
 except:
@@ -11,8 +12,6 @@ except:
 from .pyxhook import HookManager
 from .gui import clipboard
 
-# number of active clix GUIs
-active = 0
 # previously logged key
 prev_Key = None
 # path to site package
@@ -33,32 +32,47 @@ try:
 except:
     utils.clips = []
 
-def OnKeyPress(event):
-    """
-    function called when any key is pressed
-    """
-    global prev_Key, active, key_binding
+class ThreadedKeyBind(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        
+    def run(self):
+        self.new_hook = HookManager()
+        self.new_hook.KeyDown = self.OnKeyPress
+        self.new_hook.HookKeyboard()
+        self.new_hook.start()
+        # self.new_hook.cancel()
 
-    if event.Key == key_binding[1] and prev_Key == key_binding[0] \
-            and active == 0:
-        active = 1
-        clipboard(utils.clips)
-        active = 0
-        prev_Key = None
+    def OnKeyPress(self,event):
+        """
+        function called when any key is pressed
+        """
+        global prev_Key, key_binding
 
-    elif event.Key == 'c' and prev_Key == 'Control_L':
-        text = xerox.paste(xsel=True)
-        utils.clips.append(text)
-        # pickle clips data
-        with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
-            pickle.dump(utils.clips, f, protocol=2)
+        if event.Key == key_binding[1] and prev_Key == key_binding[0]:
+            if utils.active == 1:
+                utils.active = 0
+            elif utils.active == 0:
+                utils.active = 1
+            prev_Key = None
 
-        print("You just copied: {}".format(text))
+        elif event.Key == 'c' and prev_Key == 'Control_L':
+            self.text = xerox.paste(xsel=True)
+            utils.clips.append(self.text)
+            # pickle clips data
+            with open(os.path.join(os.path.dirname(__file__),'clips_data'), "wb") as f:
+                pickle.dump(utils.clips, f, protocol=2)
 
-    else:
-        prev_Key = event.Key
+            print("You just copied: {}".format(self.text))
 
-    return True
+        elif event.Key == 'z' and prev_Key == 'Control_L':
+            print("can")
+            self.new_hook.cancel()
+
+        else:
+            prev_Key = event.Key
+
+        return True
 
 
 def _show_available_keybindings():
@@ -141,11 +155,13 @@ def main():
         print("new session")
         create_new_session()
 
-    # start key-logging session
-    new_hook = HookManager()
-    new_hook.KeyDown = OnKeyPress
-    new_hook.HookKeyboard()
-    new_hook.start()
+    # seperate thread because of tkinter mainloop
+    # which blocks every other event
+    t=ThreadedKeyBind().start()
+
+    # start gui
+    utils.active=1
+    clipboard(utils.clips)
 
 
 if __name__ == "__main__":
