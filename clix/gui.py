@@ -20,19 +20,6 @@ except ImportError:
 curr_dir = os.getcwd()
 
 
-def clear_session(root):
-    root.quit()
-    root.destroy()
-    # clear global clips
-    utils.clips = []
-    # clear data in file
-    with open(os.path.join(os.path.dirname(__file__),
-              'clips_data'), "wb") as f:
-        pickle.dump(utils.clips, f, protocol=2)
-        print("session cleared")
-    clipboard(utils.clips)
-
-
 class clipboard():
     def __init__(self, clips):
         """
@@ -55,7 +42,7 @@ class clipboard():
         # add Menubar
         self.menu_bar = Menu(self.root)
         self.menu_bar.add_command(label="Clear",
-                                  command=lambda: clear_session(self.root))
+                                  command=self.clear_session)
         self.root.config(menu=self.menu_bar)
 
         # canvas to hold main scrollbar
@@ -68,10 +55,10 @@ class clipboard():
         self.canvas.configure(yscrollcommand=scrollbar.set)
 
         # main frame (inside root) config
-        self.mainFrame = Frame(self.root, padx=5, pady=5, bg="white")
+        self.mainFrame = Frame(self.root, padx=5, pady=5)
         self.mainFrame.pack(fill=BOTH, expand=True, side=TOP)
 
-        # canvas window over mainFrame
+        # canvas window over mainFramelistbox
         self.canvas.create_window((0, 0), window=self.mainFrame, anchor='nw')
         self.mainFrame.bind('<Configure>', self.on_configure)
 
@@ -81,8 +68,8 @@ class clipboard():
         self.textBoxes = []
         self.no_of_clips = len(clips)
 
-        for i in range(self.no_of_clips):
-            self.add_new_clip(clips[i], i)
+        # for i in range(self.no_of_clips):
+        self.add_new_clip()
 
         self.check_new_clip()
 
@@ -92,7 +79,9 @@ class clipboard():
         self.root.quit()
 
     def check_new_clip(self):
-
+        '''
+         check if new clip is added
+        '''
         if utils.active == 1:
             # make gui visible
             self.root.deiconify()
@@ -101,29 +90,57 @@ class clipboard():
             self.root.withdraw()
 
         if len(utils.clips) > self.no_of_clips:
-            self.add_new_clip(utils.clips[-1], self.no_of_clips)
-            self.no_of_clips += 1
+            self.add_new_clip()
+            self.no_of_clips = len(utils.clips)
 
         self.mainFrame.after(500, self.check_new_clip)
 
-    def add_new_clip(self, clip, i):
-        frame = Frame(self.mainFrame, padx=5, pady=5, bg=self.colors[i % 3])
+    def add_new_clip(self):
+        '''
+         destroy frames and add with new clip added
+        '''
+        for frame in self.frames:
+            frame.destroy()
 
-        Button(frame, text="clip it", font="Helvetica 12 bold",
-               command=partial(self.copy_to_clipboard, i), relief=RAISED,
-               padx=5, pady=5, bg='dark violet', fg='white').grid(
-                   row=0, column=0, ipady=10
-               )
+        self.frames = []
+        self.textBoxes = []
+        self.no_of_clips = len(utils.clips)
 
-        textBox = ScrolledText(frame, height=3, width=20,
-                               font="Helvetica 12 bold")
-        textBox.insert(END, clip)
+        for clip,i in zip(reversed(utils.clips),range(len(utils.clips)) ):            
+            frame = Frame(self.mainFrame, padx=5, pady=5, bg=self.colors[i % 3])
 
-        textBox.grid(row=0, column=1, sticky=E, padx=5)
-        self.textBoxes.append(textBox)
+            Button(frame, text="clip it", font="Helvetica 12 bold",
+                   command=partial(self.copy_to_clipboard, i), relief=RAISED,
+                   padx=5, pady=5, bg='dark violet', fg='white').grid(
+                       row=0, column=0, ipady=10
+                   )
 
-        frame.pack(fill='both', expand=True, pady=5)
-        self.frames.append(frame)
+            textBox = ScrolledText(frame, height=3, width=20,
+                                   font="Helvetica 12 bold")
+            textBox.insert(END, clip)
+
+            textBox.grid(row=0, column=1, sticky=E, padx=5)
+            self.textBoxes.append(textBox)
+
+            frame.pack(fill='both', expand=True, pady=5)
+            self.frames.append(frame)
+
+    def clear_session(self):
+        for frame in self.frames:
+            frame.destroy()
+
+        self.frames = []
+        self.textBoxes = []
+        self.no_of_clips = 0
+        # clear global clips
+        utils.clips = []
+        # clear data in file
+        with open(os.path.join(os.path.dirname(__file__),
+                  'clips_data'), "wb") as f:
+            pickle.dump(utils.clips, f, protocol=2)
+            print("session cleared")
+
+        self.mainFrame.after(500, self.check_new_clip)
 
     def copy_to_clipboard(self, idx):
         """

@@ -9,8 +9,8 @@ try:
     import utils
 except:
     import clix.utils as utils
-from pyxhook import HookManager
-from gui import clipboard
+from .pyxhook import HookManager
+from .gui import clipboard
 
 # previously logged key
 prev_Key = None
