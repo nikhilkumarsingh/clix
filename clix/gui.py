@@ -2,7 +2,7 @@ from os import path
 from functools import partial
 try:
     import utils
-except:
+except ImportError:
     import clix.utils as utils
 import os
 import xerox
@@ -106,8 +106,9 @@ class clipboard():
         self.textBoxes = []
         self.no_of_clips = len(utils.clips)
 
-        for clip,i in zip(reversed(utils.clips),range(len(utils.clips)) ):            
-            frame = Frame(self.mainFrame, padx=5, pady=5, bg=self.colors[i % 3])
+        for clip, i in zip(reversed(utils.clips), range(len(utils.clips))):
+            frame = Frame(self.mainFrame, padx=5, pady=5,
+                          bg=self.colors[i % 3])
 
             Button(frame, text="clip it", font="Helvetica 12 bold",
                    command=partial(self.copy_to_clipboard, i), relief=RAISED,
@@ -166,6 +167,7 @@ class clipboard():
         print("closed")
         utils.active -= 1
         self.root.withdraw()
+
 
 if __name__ == "__main__":
     example_clips = ["hello", "copy it"]

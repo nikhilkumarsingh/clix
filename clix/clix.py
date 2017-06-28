@@ -7,7 +7,7 @@ import argparse
 import threading
 try:
     import utils
-except:
+except ImportError:
     import clix.utils as utils
 from .pyxhook import HookManager
 from .gui import clipboard
@@ -30,7 +30,7 @@ try:
                       'clips_data'), "rb")
     utils.clips = pickle.load(clips_data)
     clips_data.close()
-except:
+except FileNotFoundError:
     utils.clips = []
 
 
@@ -67,10 +67,6 @@ class ThreadedKeyBind(threading.Thread):
                 pickle.dump(utils.clips, f, protocol=2)
 
             print("You just copied: {}".format(self.text))
-
-        elif event.Key == 'z' and prev_Key == 'Control_L':
-            print("can")
-            self.new_hook.cancel()
 
         else:
             prev_Key = event.Key
