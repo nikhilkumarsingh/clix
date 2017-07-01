@@ -51,6 +51,7 @@ An easy to use clipboard manager made using tkinter.
   ```
 
 - Press **Ctrl** + **space** keys to open clix GUI.
+  And **Ctrl** + **space** again to close it.
   Initially, all clip frames are empty.
 
 - Now, as you copy any text, (using **Ctrl** + **c** keys), the text is saved to 
@@ -122,6 +123,10 @@ An easy to use clipboard manager made using tkinter.
 - To test local version of clix:
 	```
 	$ pip install -U .
+	```
+	OR :
+	```
+	$ pip install -e <project dir.> .
 	```
 
 Finally, do report bugs and help us make **clix** more and more productive!

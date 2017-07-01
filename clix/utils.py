@@ -14,3 +14,5 @@ available_keys = {
 
 # clipboard
 clips = []
+
+active = 0
