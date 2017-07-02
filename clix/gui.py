@@ -89,11 +89,10 @@ class clipboard():
             # make gui hide
             self.root.withdraw()
 
-        if len(utils.clips) > self.no_of_clips:
+        if len(utils.clips) != self.no_of_clips:
             self.add_new_clip()
-            self.no_of_clips = len(utils.clips)
 
-        self.mainFrame.after(500, self.check_new_clip)
+        self.mainFrame.after(200, self.check_new_clip)
 
     def add_new_clip(self):
         '''
@@ -107,21 +106,31 @@ class clipboard():
         self.no_of_clips = len(utils.clips)
 
         for clip, i in zip(reversed(utils.clips), range(len(utils.clips))):
-            frame = Frame(self.mainFrame, padx=5, pady=5,
-                          bg=self.colors[i % 3])
 
-            Button(frame, text="clip it", font="Helvetica 12 bold",
+            frame = Frame(self.mainFrame, padx=5,
+                          pady=5, bg=self.colors[i % 3])
+
+            Button(frame, text="clip it ", font="Helvetica 12 bold",
                    command=partial(self.copy_to_clipboard, i), relief=RAISED,
-                   padx=5, pady=5, bg='dark violet', fg='white').grid(
-                       row=0, column=0, ipady=10
+                   padx=3, pady=3, bg='dark violet', fg='white').grid(
+                       row=0, column=0, ipady=2
                    )
 
-            textBox = ScrolledText(frame, height=3, width=20,
+            Button(frame, text="delete", font="Helvetica 12 bold",
+                   command=partial(self.delete_frame, len(utils.clips)-i-1),
+                   relief=RAISED,
+                   padx=3, pady=3, bg='dark green', fg='white').grid(
+                       row=1, column=0, ipady=2
+                   )
+
+            textBox = ScrolledText(frame, height=4, width=20,
                                    font="Helvetica 12 bold")
             textBox.insert(END, clip)
 
-            textBox.grid(row=0, column=1, sticky=E, padx=5)
+            textBox.grid(row=0, column=1, rowspan=2, sticky=E, padx=5)
             self.textBoxes.append(textBox)
+
+            self.no_of_clips = len(utils.clips)
 
             frame.pack(fill='both', expand=True, pady=5)
             self.frames.append(frame)
@@ -141,14 +150,18 @@ class clipboard():
             pickle.dump(utils.clips, f, protocol=2)
             print("session cleared")
 
-        self.mainFrame.after(500, self.check_new_clip)
-
     def copy_to_clipboard(self, idx):
         """
         function to copy text of frame no. idx to clipboard
         """
         text = self.textBoxes[idx].get("1.0", END)
         xerox.copy(text)
+
+    def delete_frame(self, idx):
+        """
+        function to remove any frame
+        """
+        del utils.clips[idx]
 
     def on_configure(self, event):
         """
