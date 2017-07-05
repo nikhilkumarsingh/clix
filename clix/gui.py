@@ -119,7 +119,7 @@ class clipboard():
             Button(frame, text="delete", font="Helvetica 12 bold",
                    command=partial(self.delete_frame, len(utils.clips)-i-1),
                    relief=RAISED,
-                   padx=3, pady=3, bg='dark green', fg='white').grid(
+                   padx=3, pady=3, bg='red', fg='white').grid(
                        row=1, column=0, ipady=2
                    )
 
