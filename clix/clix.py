@@ -68,6 +68,9 @@ class ThreadedKeyBind(threading.Thread):
 
             print("You just copied: {}".format(self.text))
 
+        elif event.Key == 'z' and prev_Key == 'Control_L':
+            self.new_hook.cancel()
+
         else:
             prev_Key = event.Key
 
