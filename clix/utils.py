@@ -12,6 +12,16 @@ available_keys = {
     'SPACE': 'space'
 }
 
+available_keys_win = {
+    'LCTRL': 'Lcontrol',
+    'RCTRL': 'Rcontrol',
+    'LALT': "Lmenu",
+    'RALT': "Rmenu",
+    'LSHIFT': 'Lshift',
+    'RSHIFT': 'Rshift',
+    'SPACE': 'Space'
+}
+
 # clipboard
 clips = []
 

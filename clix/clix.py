@@ -9,8 +9,19 @@ try:
     import utils
 except ImportError:
     import clix.utils as utils
-from .pyxhook import HookManager
 from .gui import clipboard
+
+global curros
+global available_keys
+if sys.platform == 'linux' or sys.platform == 'linux2':
+    from .pyxhook import HookManager
+    available_keys = utils.available_keys
+    curros = 'linux'
+elif sys.platform == 'win32':
+    import pythoncom
+    from pyHook import HookManager
+    available_keys = utils.available_keys_win
+    curros = 'win'
 
 # previously logged key
 prev_Key = None
@@ -42,7 +53,10 @@ class ThreadedKeyBind(threading.Thread):
         self.new_hook = HookManager()
         self.new_hook.KeyDown = self.OnKeyPress
         self.new_hook.HookKeyboard()
-        self.new_hook.start()
+        if curros == 'linux':
+            self.new_hook.start()
+        elif curros == 'win':
+            pythoncom.PumpMessages()
         # self.new_hook.cancel()
 
     def OnKeyPress(self, event):
@@ -51,15 +65,18 @@ class ThreadedKeyBind(threading.Thread):
         """
         global prev_Key, key_binding
 
-        if event.Key == key_binding[1] and prev_Key == key_binding[0]:
+        if (event.Key == available_keys['SPACE'] and
+            prev_Key == available_keys['LCTRL']):
+
             if utils.active == 1:
                 utils.active = 0
             elif utils.active == 0:
                 utils.active = 1
             prev_Key = None
 
-        elif event.Key == 'c' and prev_Key == 'Control_L':
-            self.text = xerox.paste(xsel=True)
+        elif event.Key.lower() == 'c' and prev_Key == available_keys['LCTRL']:
+
+            self.text = xerox.paste()
             utils.clips.append(self.text)
             # pickle clips data
             with open(os.path.join(os.path.dirname(__file__),
@@ -68,8 +85,8 @@ class ThreadedKeyBind(threading.Thread):
 
             print("You just copied: {}".format(self.text))
 
-        elif event.Key == 'z' and prev_Key == 'Control_L':
-            self.new_hook.cancel()
+        elif event.Key.lower() == 'z' and prev_Key == available_keys['LCTRL']:
+            sys.exit(0)
 
         else:
             prev_Key = event.Key
@@ -82,7 +99,7 @@ def _show_available_keybindings():
     function to show available keys
     """
     print("Available Keys: "+"\n")
-    for key in utils.available_keys:
+    for key in available_keys:
         print(key)
 
 
@@ -91,7 +108,7 @@ def get_current_keybinding():
     function to show current key-binding
     """
     global key_binding
-    temp = {b: a for a, b in utils.available_keys.items()}
+    temp = {b: a for a, b in available_keys.items()}
     return temp[key_binding[0]] + "+" + temp[key_binding[1]]
 
 
@@ -144,8 +161,8 @@ def main():
     elif args.set_keybinding:
         try:
             keys = args_dict['set_keybinding'].split('+')
-            key_binding = [utils.available_keys[keys[0]],
-                           utils.available_keys[keys[1]]]
+            key_binding = [available_keys[keys[0]],
+                           available_keys[keys[1]]]
         except KeyError:
             print("Please follow the correct format.")
         else:

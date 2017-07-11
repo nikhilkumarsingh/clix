@@ -35,9 +35,14 @@ class clipboard():
         # when 'X' button is clicked
         self.root.protocol('WM_DELETE_WINDOW', self.q)
 
-        img = PhotoImage(file=os.path.join(os.path.dirname(__file__),
-                         "icon.png"))
-        self.root.tk.call('wm', 'iconphoto', self.root._w, img)
+        try:
+            img = PhotoImage(file=os.path.join(os.path.dirname(__file__),
+                             "icon.png"))
+            self.root.tk.call('wm', 'iconphoto', self.root._w, img)
+        except:
+            img = PhotoImage(file=os.path.join(os.path.dirname(__file__),
+                             "icon.ico"))
+            self.root.tk.call('wm', 'iconphoto', self.root._w, img)
 
         # add Menubar
         self.menu_bar = Menu(self.root)
