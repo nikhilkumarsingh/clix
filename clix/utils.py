@@ -24,5 +24,5 @@ available_keys_win = {
 
 # clipboard
 clips = []
-
+curros = 'linux'
 active = 0

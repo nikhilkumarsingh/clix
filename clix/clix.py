@@ -11,17 +11,16 @@ except ImportError:
     import clix.utils as utils
 from .gui import clipboard
 
-global curros
 global available_keys
 if sys.platform == 'linux' or sys.platform == 'linux2':
     from .pyxhook import HookManager
     available_keys = utils.available_keys
-    curros = 'linux'
+    utils.curros = 'linux'
 elif sys.platform == 'win32':
     import pythoncom
     from pyHook import HookManager
     available_keys = utils.available_keys_win
-    curros = 'win'
+    utils.curros = 'win'
 
 # previously logged key
 prev_Key = None
@@ -53,9 +52,9 @@ class ThreadedKeyBind(threading.Thread):
         self.new_hook = HookManager()
         self.new_hook.KeyDown = self.OnKeyPress
         self.new_hook.HookKeyboard()
-        if curros == 'linux':
+        if utils.curros == 'linux':
             self.new_hook.start()
-        elif curros == 'win':
+        elif utils.curros == 'win':
             pythoncom.PumpMessages()
         # self.new_hook.cancel()
 
@@ -75,8 +74,8 @@ class ThreadedKeyBind(threading.Thread):
             prev_Key = None
 
         elif event.Key.lower() == 'c' and prev_Key == available_keys['LCTRL']:
-
             self.text = xerox.paste()
+
             utils.clips.append(self.text)
             # pickle clips data
             with open(os.path.join(os.path.dirname(__file__),
