@@ -6,6 +6,7 @@ import pickle
 import argparse
 import threading
 import pprint
+import time
 from pynput import keyboard
 
 try:
@@ -77,16 +78,19 @@ class ThreadedKeyBind(threading.Thread):
                 if curros == "linux":
                     self.text = xerox.paste()
                 else :
+                    time.sleep(.5)
                     self.text = utils.root.clipboard_get()
-                utils.clips.append(self.text)
-                # pickle clips data
-                with open(os.path.join(os.path.dirname(__file__),
-                          'clips_data'), "wb") as f:
-                    pickle.dump(utils.clips, f, protocol=2)
-
-                print("You just copied: {}".format(self.text))
             except:
-                print("")
+                self.text = ""
+            
+            utils.clips.append(self.text)
+            # pickle clips data
+            with open(os.path.join(os.path.dirname(__file__),
+                      'clips_data'), "wb") as f:
+                pickle.dump(utils.clips, f, protocol=2)
+
+            print("You just copied: {}".format(self.text))
+
 
         elif ((pprint.pformat(key) == "'z'" and
                 prev_Key == keyboard.Key.ctrl) or
