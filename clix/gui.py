@@ -28,7 +28,7 @@ class clipboard():
         # root (top level element) config
         H, W = 250, 300
         self.root = Tk()
-        utils.root=self.root
+        utils.root = self.root
         self.root.title("clix")
         self.root.minsize(width=W, height=H)
         self.position_window()

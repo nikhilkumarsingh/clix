@@ -47,6 +47,7 @@ if sys.platform == 'linux' or sys.platform == 'linux2':
 elif sys.platform == 'win32':
     curros = 'win'
 
+
 # Collect events until released
 class ThreadedKeyBind(threading.Thread):
     def __init__(self):
@@ -77,12 +78,12 @@ class ThreadedKeyBind(threading.Thread):
             try:
                 if curros == "linux":
                     self.text = xerox.paste()
-                else :
+                else:
                     time.sleep(.5)
                     self.text = utils.root.clipboard_get()
             except:
                 self.text = ""
-            
+
             utils.clips.append(self.text)
             # pickle clips data
             with open(os.path.join(os.path.dirname(__file__),
@@ -90,7 +91,6 @@ class ThreadedKeyBind(threading.Thread):
                 pickle.dump(utils.clips, f, protocol=2)
 
             print("You just copied: {}".format(self.text))
-
 
         elif ((pprint.pformat(key) == "'z'" and
                 prev_Key == keyboard.Key.ctrl) or
