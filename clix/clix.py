@@ -80,7 +80,8 @@ class ThreadedKeyBind(threading.Thread):
         elif ((pprint.pformat(key) == "'z'" and
                 prev_Key == keyboard.Key.ctrl) or
                 pprint.pformat(key) == "'\\x1a'"):
-            sys.exit(0)
+            utils.root.destroy()
+            self.stop()
 
         else:
             prev_Key = key

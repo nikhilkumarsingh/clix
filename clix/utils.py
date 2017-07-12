@@ -16,3 +16,4 @@ available_keys = {
 clips = []
 curros = 'linux'
 active = 0
+global root
