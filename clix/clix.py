@@ -59,7 +59,6 @@ class ThreadedKeyBind(threading.Thread):
         function called when any key is pressed
         """
         global prev_Key, key_binding
-
         if (key == keyboard.Key.space and
                 prev_Key == keyboard.Key.ctrl_l):
             if utils.active == 1:
@@ -68,8 +67,8 @@ class ThreadedKeyBind(threading.Thread):
                 utils.active = 1
             prev_Key = None
 
-        elif (key == 'c' and
-                prev_Key == keyboard.Key.ctrl_l) or pprint.pformat(key) == "'\\x03'":
+        elif (pprint.pformat(key) == "'c'" and
+                prev_Key == keyboard.Key.ctrl) or pprint.pformat(key) == "'\\x03'":
             self.text = xerox.paste()
             utils.clips.append(self.text)
             # pickle clips data
@@ -79,8 +78,8 @@ class ThreadedKeyBind(threading.Thread):
 
             print("You just copied: {}".format(self.text))
 
-        elif (key == 'z' and
-                prev_Key == keyboard.Key.ctrl_l) or pprint.pformat(key) == "'\\x1a'":
+        elif (pprint.pformat(key) == "'z'" and
+                prev_Key == keyboard.Key.ctrl) or pprint.pformat(key) == "'\\x1a'":
             sys.exit(0)
 
         else:
