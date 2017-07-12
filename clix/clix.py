@@ -40,6 +40,11 @@ try:
 except FileNotFoundError:
     utils.clips = []
 
+global curros
+if sys.platform == 'linux' or sys.platform == 'linux2':
+    curros = 'linux'
+elif sys.platform == 'win32':
+    curros = 'win'
 
 # Collect events until released
 class ThreadedKeyBind(threading.Thread):
@@ -68,14 +73,20 @@ class ThreadedKeyBind(threading.Thread):
         elif ((pprint.pformat(key) == "'c'" and
                 prev_Key == keyboard.Key.ctrl) or
                 pprint.pformat(key) == "'\\x03'"):
-            self.text = xerox.paste()
-            utils.clips.append(self.text)
-            # pickle clips data
-            with open(os.path.join(os.path.dirname(__file__),
-                      'clips_data'), "wb") as f:
-                pickle.dump(utils.clips, f, protocol=2)
+            try:
+                if curros == "linux":
+                    self.text = xerox.paste()
+                else :
+                    self.text = utils.root.clipboard_get()
+                utils.clips.append(self.text)
+                # pickle clips data
+                with open(os.path.join(os.path.dirname(__file__),
+                          'clips_data'), "wb") as f:
+                    pickle.dump(utils.clips, f, protocol=2)
 
-            print("You just copied: {}".format(self.text))
+                print("You just copied: {}".format(self.text))
+            except:
+                print("")
 
         elif ((pprint.pformat(key) == "'z'" and
                 prev_Key == keyboard.Key.ctrl) or
