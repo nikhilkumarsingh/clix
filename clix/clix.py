@@ -41,9 +41,7 @@ except FileNotFoundError:
     utils.clips = []
 
 
-
 # Collect events until released
-
 class ThreadedKeyBind(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
@@ -54,7 +52,7 @@ class ThreadedKeyBind(threading.Thread):
                 ) as listener:
             listener.join()
 
-    def on_press(self,key):
+    def on_press(self, key):
         """
         function called when any key is pressed
         """
@@ -67,8 +65,9 @@ class ThreadedKeyBind(threading.Thread):
                 utils.active = 1
             prev_Key = None
 
-        elif (pprint.pformat(key) == "'c'" and
-                prev_Key == keyboard.Key.ctrl) or pprint.pformat(key) == "'\\x03'":
+        elif ((pprint.pformat(key) == "'c'" and
+                prev_Key == keyboard.Key.ctrl) or
+                pprint.pformat(key) == "'\\x03'"):
             self.text = xerox.paste()
             utils.clips.append(self.text)
             # pickle clips data
@@ -78,13 +77,14 @@ class ThreadedKeyBind(threading.Thread):
 
             print("You just copied: {}".format(self.text))
 
-        elif (pprint.pformat(key) == "'z'" and
-                prev_Key == keyboard.Key.ctrl) or pprint.pformat(key) == "'\\x1a'":
+        elif ((pprint.pformat(key) == "'z'" and
+                prev_Key == keyboard.Key.ctrl) or
+                pprint.pformat(key) == "'\\x1a'"):
             sys.exit(0)
 
         else:
             prev_Key = key
-        
+
         return True
 
 
