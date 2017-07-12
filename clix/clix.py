@@ -5,6 +5,9 @@ import xerox
 import pickle
 import argparse
 import threading
+import pprint
+from pynput import keyboard
+
 try:
     import utils
 except ImportError:
@@ -12,15 +15,9 @@ except ImportError:
 from .gui import clipboard
 
 global available_keys
-if sys.platform == 'linux' or sys.platform == 'linux2':
-    from .pyxhook import HookManager
-    available_keys = utils.available_keys
-    utils.curros = 'linux'
-elif sys.platform == 'win32':
-    import pythoncom
-    from pyHook import HookManager
-    available_keys = utils.available_keys_win
-    utils.curros = 'win'
+
+available_keys = utils.available_keys
+
 
 # previously logged key
 prev_Key = None
@@ -44,38 +41,36 @@ except FileNotFoundError:
     utils.clips = []
 
 
+
+# Collect events until released
+
 class ThreadedKeyBind(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
     def run(self):
-        self.new_hook = HookManager()
-        self.new_hook.KeyDown = self.OnKeyPress
-        self.new_hook.HookKeyboard()
-        if utils.curros == 'linux':
-            self.new_hook.start()
-        elif utils.curros == 'win':
-            pythoncom.PumpMessages()
-        # self.new_hook.cancel()
+        with keyboard.Listener(
+                on_press=self.on_press,
+                ) as listener:
+            listener.join()
 
-    def OnKeyPress(self, event):
+    def on_press(self,key):
         """
         function called when any key is pressed
         """
         global prev_Key, key_binding
 
-        if (event.Key == available_keys['SPACE'] and
-            prev_Key == available_keys['LCTRL']):
-
+        if (key == keyboard.Key.space and
+                prev_Key == keyboard.Key.ctrl_l):
             if utils.active == 1:
                 utils.active = 0
             elif utils.active == 0:
                 utils.active = 1
             prev_Key = None
 
-        elif event.Key.lower() == 'c' and prev_Key == available_keys['LCTRL']:
+        elif (key == 'c' and
+                prev_Key == keyboard.Key.ctrl_l) or pprint.pformat(key) == "'\\x03'":
             self.text = xerox.paste()
-
             utils.clips.append(self.text)
             # pickle clips data
             with open(os.path.join(os.path.dirname(__file__),
@@ -84,12 +79,13 @@ class ThreadedKeyBind(threading.Thread):
 
             print("You just copied: {}".format(self.text))
 
-        elif event.Key.lower() == 'z' and prev_Key == available_keys['LCTRL']:
+        elif (key == 'z' and
+                prev_Key == keyboard.Key.ctrl_l) or pprint.pformat(key) == "'\\x1a'":
             sys.exit(0)
 
         else:
-            prev_Key = event.Key
-
+            prev_Key = key
+        
         return True
 
 
