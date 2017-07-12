@@ -79,7 +79,7 @@ class ThreadedKeyBind(threading.Thread):
                 if curros == "linux":
                     self.text = xerox.paste()
                 else:
-                    time.sleep(.5)
+                    time.sleep(.2)
                     self.text = utils.root.clipboard_get()
             except:
                 self.text = ""
