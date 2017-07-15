@@ -72,7 +72,8 @@ class ThreadedKeyBind(threading.Thread):
                 utils.active = 1
             prev_Key = None
 
-        elif ((pprint.pformat(key) == "'c'" and
+        elif (( (pprint.pformat(key) == "'c'" or
+                pprint.pformat(key) == "u'c'") and
                 prev_Key == keyboard.Key.ctrl) or
                 pprint.pformat(key) == "'\\x03'"):
             try:
@@ -92,7 +93,8 @@ class ThreadedKeyBind(threading.Thread):
 
             print("You just copied: {}".format(self.text))
 
-        elif ((pprint.pformat(key) == "'z'" and
+        elif (( (pprint.pformat(key) == "'z'" or
+                pprint.pformat(key) == "u'z'") and
                 prev_Key == keyboard.Key.ctrl) or
                 pprint.pformat(key) == "'\\x1a'"):
             utils.root.destroy()
