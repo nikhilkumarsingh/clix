@@ -9,7 +9,7 @@ def readme():
 		pass
 
 setup(name = 'clix',
-	  version = '1.0.7',
+	  version = '1.0.8',
 	  classifiers = [
 	  	'Development Status :: 4 - Beta',
 	  	'License :: OSI Approved :: MIT License',
@@ -30,7 +30,7 @@ setup(name = 'clix',
 	  author_email = 'nikhilksingh97@gmail.com',
 	  license = 'MIT',
 	  packages = ['clix'],
-	  install_requires = ['xerox'],
+	  install_requires = ['xerox','pynput'],
 	  include_package_data = True,
 	  entry_points="""
 	  [console_scripts]
