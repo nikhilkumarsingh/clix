@@ -33,6 +33,10 @@ An easy to use clipboard manager made using tkinter.
 	```
 	$ sudo clix
 	```
+	On Mac OSX, one of the following must be true:
+
+		-The process must run as root.
+		-Your application must be white listed under Enable access for assistive devices. Note that this might require that you package your  	application, since otherwise the entire Python installation must be white listed.
 
   **Note:** Leave this terminal open as long as you want to use **clix**.
   
