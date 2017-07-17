@@ -1,4 +1,4 @@
-[![PyPI](https://img.shields.io/badge/PyPi-v1.0.6-f39f37.svg)](https://pypi.python.org/pypi/clix)
+[![PyPI](https://img.shields.io/badge/PyPi-v1.0.8-f39f37.svg)](https://pypi.python.org/pypi/clix)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/nikhilkumarsingh/clix/blob/master/LICENSE.txt)
 
 # clix
